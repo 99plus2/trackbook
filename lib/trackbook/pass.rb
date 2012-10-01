@@ -82,7 +82,7 @@ module Trackbook
           { 'key' => "status", 'label' => "STATUS", 'value' => "Out for Delivery" }
         ],
         'auxiliaryFields' => [
-          { 'key' => "number", 'label' => "NUMBER", 'value' => "1Z7F382V0203242533" },
+          { 'key' => "number", 'label' => "NUMBER", 'value' => pass['serial_number'] },
           { 'key' => "delivered", 'label' => "Delivered by", 'value' => "Today" }
         ],
         'backFields' => [
