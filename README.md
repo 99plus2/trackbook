@@ -8,7 +8,7 @@ Apple doesn't make this easy, you're going to need setup some
 certificate stuff inorder to generate passes locally.
 
 First head over to the [iOS Provisioning Portal](https://developer.apple.com/ios/manage/overview/index.action),
-follow the directions and create a new "Pass Type IDs".
+follow the directions and create a new "Pass Type ID".
 
 ![](http://i.imgur.com/tPkAE.png)
 
@@ -19,6 +19,8 @@ environment variable in your shell.
 ``` sh
 $ export PASS_TYPE_ID=5SW9VUVYKC.pass.trackbook.tracking-info
 ```
+
+![](http://i.imgur.com/0yf26.png)
 
 Next, download the certificate and find it in your Keychain. It should
 be called something like `Pass Type ID: pass.something`. Export it
@@ -33,6 +35,8 @@ $ export CERT=...
 
 Use the `format-cert` script and export its output in your shell. Then
 export the password too.
+
+![](http://i.imgur.com/i88Qk.png)
 
 Last, find another certificate in Keychain called *Apple Worldwide
 Developer Relations Certification Authority*. Export that as a `.pem`
