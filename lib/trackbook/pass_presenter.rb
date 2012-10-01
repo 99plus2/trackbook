@@ -50,7 +50,7 @@ module Trackbook
       }
 
       if pass['deliver_on']
-        json['relevantDate'] = pass['deliver_on'].strftime("%Y-%m-%d")
+        json['relevantDate'] = pass['deliver_on'].iso8601
       end
 
       json

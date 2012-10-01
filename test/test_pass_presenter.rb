@@ -86,7 +86,7 @@ EOS
 
     assert_equal "Trackbook", pass['organizationName']
     assert_equal "UPS Tracking information for Paper", pass['description']
-    assert_equal "2012-10-03", pass['relevantDate']
+    assert_equal "2012-10-03T00:00:00Z", pass['relevantDate']
 
     assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
     assert_equal "BILLING INFORMATION RECEIVED", pass['generic']['secondaryFields'][0]['value']
