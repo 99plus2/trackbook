@@ -27,6 +27,17 @@ class TestPass < Test::Unit::TestCase
     ]
   }
 
+  PENDING_PASS = {
+    'pass_type_id' => "1234567890.pass.com.example",
+    'serial_number' => "1Z9999999999999999",
+    'authentication_token' => "6ad6738983ce899bb5c33f70d9fab474",
+    'description' => "Paper",
+    'deliver_on' => Time.parse("2012-10-03"),
+    'activity' => [
+      {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-10-01 10:20:08")}
+    ]
+  }
+
   def test_format_delivered_pass
     assert pass = format_pass(DELIVERED_PASS)
 
@@ -44,7 +55,6 @@ class TestPass < Test::Unit::TestCase
     assert_equal "Nexus 7", pass['generic']['primaryFields'][0]['value']
     assert_equal "DELIVERED", pass['generic']['secondaryFields'][0]['value']
     assert_equal "1Z9999999999999999", pass['generic']['auxiliaryFields'][0]['value']
-    # assert_equal "", pass['generic']['auxiliaryFields'][1]['value']
 
     assert_equal <<-EOS.chomp, pass['generic']['backFields'][0]['value']
 09/06  CHICAGO IL 60614  DELIVERED
@@ -61,6 +71,31 @@ class TestPass < Test::Unit::TestCase
 09/04    BILLING INFORMATION RECEIVED
 EOS
   end
+
+  def test_format_pending_pass
+    assert pass = format_pass(PENDING_PASS)
+
+    assert_equal 1, pass['formatVersion']
+
+    assert_equal "1234567890", pass['teamIdentifier']
+    assert_equal "pass.com.example", pass['passTypeIdentifier']
+
+    assert_equal "1Z9999999999999999", pass['serialNumber']
+    assert_equal "6ad6738983ce899bb5c33f70d9fab474", pass['authenticationToken']
+
+    assert_equal "UPS", pass['organizationName']
+    assert_equal "Tracking information", pass['description']
+
+    assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
+    assert_equal "BILLING INFORMATION RECEIVED", pass['generic']['secondaryFields'][0]['value']
+    assert_equal "1Z9999999999999999", pass['generic']['auxiliaryFields'][0]['value']
+    assert_equal "Oct  3", pass['generic']['auxiliaryFields'][1]['value']
+
+    assert_equal <<-EOS.chomp, pass['generic']['backFields'][0]['value']
+10/01    BILLING INFORMATION RECEIVED
+EOS
+  end
+
 
   def test_present_delivered_pkpass
     assert pkpass = present_pkpass(DELIVERED_PASS)

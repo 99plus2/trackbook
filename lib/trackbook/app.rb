@@ -71,7 +71,7 @@ module Trackbook
         halt 401
       end
 
-      pass.merge!({'activity' => Track.track_shipment(pass['serial_number'])})
+      pass = pass.merge(Track.track_shipment(pass['serial_number']))
       data = PassPresenter.present_pkpass(pass, "#{request.base_url}/")
 
       content_type 'application/vnd.apple.pkpass'

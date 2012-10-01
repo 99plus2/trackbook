@@ -51,10 +51,15 @@ module Trackbook
     def present_fields(pass)
       fields = {
         'auxiliaryFields' => [
-          { 'key' => "number", 'label' => "NUMBER", 'value' => pass['serial_number'] },
-          { 'key' => "delivered", 'label' => "Delivered by", 'value' => Time.now.strftime("%b %e %k:%M") }
+          { 'key' => "number", 'label' => "NUMBER", 'value' => pass['serial_number'] }
         ]
       }
+
+      if deliver_on = pass['deliver_on']
+        fields['auxiliaryFields'] << {
+          'key' => "delivered", 'label' => "Delivered by", 'value' => deliver_on.strftime("%b %e")
+        }
+      end
 
       if description = pass['description']
         fields['primaryFields'] = [
