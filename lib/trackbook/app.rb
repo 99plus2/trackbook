@@ -78,6 +78,8 @@ module Trackbook
         halt 401
       end
 
+      pass.merge!({'activity' => Track.track_shipment(pass['serial_number'])})
+
       content_type 'application/vnd.apple.pkpass'
       attachment "#{params[:serial_number]}.pkpass"
       last_modified Time.now-60

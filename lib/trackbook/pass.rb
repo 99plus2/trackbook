@@ -89,7 +89,7 @@ module Trackbook
         ]
       end
 
-      if activity = pass['activity'].first
+      if pass['activity'] && (activity = pass['activity'].first)
         fields['secondaryFields'] = [
           { 'key' => "status", 'label' => "STATUS", 'value' => activity['status'] }
         ]
@@ -114,7 +114,7 @@ module Trackbook
 
     def find_pass(redis, pass_type_id, serial_number)
       if pass = redis.get("passes:#{pass_type_id}:#{serial_number}")
-        JSON.parse(pass).merge({'activity' => Track.track_shipment(serial_number)})
+        JSON.parse(pass)
       end
     end
 
