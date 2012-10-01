@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'digest/md5'
 
 require 'trackbook/pass'
 require 'trackbook/pass_presenter'
@@ -71,10 +72,12 @@ module Trackbook
       end
 
       pass.merge!({'activity' => Track.track_shipment(pass['serial_number'])})
+      data = PassPresenter.present_pkpass(pass, "#{request.base_url}/")
 
       content_type 'application/vnd.apple.pkpass'
       attachment "#{params[:serial_number]}.pkpass"
-      PassPresenter.present_pkpass(pass, "#{request.base_url}/")
+      etag Digest::MD5.hexdigest(data)
+      data
     end
 
     post "/v1/log" do
