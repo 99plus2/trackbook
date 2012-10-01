@@ -50,7 +50,7 @@ module Trackbook
         halt 401
       end
 
-      Pass.unregister_pass($redis, params[:serial_number], params[:device_id])
+      Pass.unregister_pass($redis, params[:pass_type_id], params[:serial_number], params[:device_id])
       status 200
     end
 

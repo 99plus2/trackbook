@@ -8,6 +8,7 @@ class TestPass < Test::Unit::TestCase
 
   def setup
     @redis = Redis.new
+    @device_id = "4d5bbdc31a7b2fc19049cc0a20f4234c"
   end
 
   def test_generate_pass
@@ -34,5 +35,21 @@ class TestPass < Test::Unit::TestCase
     assert_equal "1234567890", pass['teamIdentifier']
     assert_equal "pass.com.example", pass['passTypeIdentifier']
     assert_equal serial_number, pass['serialNumber']
+  end
+
+  def test_register_pass
+    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example")
+
+    assert register_pass(@redis, pass_type_id, serial_number, @device_id)
+    assert !register_pass(@redis, pass_type_id, serial_number, @device_id)
+  end
+
+  def test_unregister_pass
+    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example")
+
+    assert !unregister_pass(@redis, pass_type_id, serial_number, @device_id)
+    assert register_pass(@redis, pass_type_id, serial_number, @device_id)
+    assert unregister_pass(@redis, pass_type_id, serial_number, @device_id)
+    assert !unregister_pass(@redis, pass_type_id, serial_number, @device_id)
   end
 end

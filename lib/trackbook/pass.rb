@@ -10,6 +10,9 @@ module Trackbook
   module Pass
     extend self
 
+    MONTH_SECS = 30 * 24 * 60 * 60
+    WEEK_SECS  = 7 * 24 * 60 * 60
+
     def split_team_and_pass_type_id(id)
       id.split(".", 2)
     end
@@ -25,7 +28,9 @@ module Trackbook
         'authentication_token' => SecureRandom.hex(16),
       }
 
-      redis.set "passes:#{pass_type_id}:#{serial_number}", pass.to_json
+      key = "passes:#{pass_type_id}:#{serial_number}"
+      redis.set key, pass.to_json
+      redis.expire key, MONTH_SECS
 
       [pass_type_id, serial_number]
     end
@@ -111,10 +116,13 @@ module Trackbook
         'serial_number' => serial_number,
         'push_token' => push_token
       }
-      redis.setnx("registrations:#{serial_number}:#{device_id}", registration.to_json) == 1
+      key = "registrations:#{serial_number}:#{device_id}"
+      res = redis.setnx key, registration.to_json
+      redis.expire key, WEEK_SECS
+      res
     end
 
-    def unregister_pass(redis, serial_number, device_id)
+    def unregister_pass(redis, pass_type_id, serial_number, device_id)
       redis.del("registrations:#{serial_number}:#{device_id}") > 0
     end
   end
