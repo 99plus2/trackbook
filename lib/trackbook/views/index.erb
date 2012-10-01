@@ -6,8 +6,12 @@
 </head>
 <body>
   <form method=post>
-    <input type=text name="tracking_number">
-    <input type=submit>
+    <p>
+      <label for="trackingNumber">UPS Tracking Number</label><br>
+      <input type=text name="tracking_number" id="trackingNumber" required size=22 placeholder=1Z9999999999999999>
+    </p>
+
+    <p><input type=submit value="Send to Passbook"></p>
   </form>
 </body>
 </html>
