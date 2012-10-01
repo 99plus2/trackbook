@@ -67,11 +67,14 @@ module Trackbook
 
       content_type 'application/vnd.apple.pkpass'
       attachment "#{params[:serial_number]}.pkpass"
+      last_modified Time.now-60
       Pass.build_pass_pkpass(pass, "#{request.base_url}/")
     end
 
     post "/v1/log" do
-      warn "LOG: #{params.inspect}"
+      request.body.rewind
+      data = JSON.parse(request.body.read)
+      data['logs'].each { |l| warn l }
       ""
     end
 
