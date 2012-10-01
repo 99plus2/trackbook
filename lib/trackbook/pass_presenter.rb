@@ -71,7 +71,7 @@ module Trackbook
 
       if deliver_on = pass['deliver_on']
         fields['auxiliaryFields'] << {
-          'key' => "delivered", 'label' => "Delivered by", 'value' => deliver_on.strftime("%b %e")
+          'key' => "delivered", 'label' => "DELIVER ON", 'value' => deliver_on.strftime("%b %e")
         }
       end
 
