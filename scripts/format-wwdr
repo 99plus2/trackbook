@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# ./script/format-wwdr "Apple Worldwide Developer Relations Certification Authority.pem"
+
+puts "export WWDR_CERT=" + ARGF.read.
+  sub('-----BEGIN CERTIFICATE-----', '').
+  sub('-----END CERTIFICATE-----', '').split("\n").join("").strip

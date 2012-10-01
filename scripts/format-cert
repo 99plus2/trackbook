@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# ./script/format-cert passbook.p12
+
+require 'base64'
+puts "export CERT=" + Base64.encode64(ARGF.read).split("\n").join("").strip
