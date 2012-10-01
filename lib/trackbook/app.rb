@@ -52,7 +52,7 @@ module Trackbook
     end
 
     get "/v1/devices/:device_id/registrations/:pass_type_id" do
-      serial_numbers = Pass.find_device_registered_serial_numbers($reids, params[:pass_type_id], params[:device_id])
+      serial_numbers = Pass.find_device_registered_serial_numbers($redis, params[:pass_type_id], params[:device_id])
 
       if serial_numbers.any?
         {
