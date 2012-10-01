@@ -13,16 +13,6 @@ module Trackbook
       use Rack::SSL
     end
 
-    configure do
-      require 'redis'
-      if url = ENV['REDISTOGO_URL']
-        uri = URI.parse(url)
-        $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
-      else
-        $redis = Redis.new
-      end
-    end
-
     get "/" do
       erb :index
     end
@@ -34,7 +24,7 @@ module Trackbook
     end
 
     post "/" do
-      pass_type_id, serial_number = Pass.generate_pass($redis, PASS_TYPE_ID, params[:tracking_number], params[:description])
+      pass_type_id, serial_number = Pass.generate_pass(PASS_TYPE_ID, params[:tracking_number], params[:description])
       redirect "/v1/passes/#{pass_type_id}/#{serial_number}"
     end
 
@@ -42,11 +32,11 @@ module Trackbook
       request.body.rewind
       data = JSON.parse(request.body.read)
 
-      unless pass = Pass.find_authenticated_pass($redis, params[:pass_type_id], params[:serial_number], apple_auth_token)
+      unless pass = Pass.find_authenticated_pass(params[:pass_type_id], params[:serial_number], apple_auth_token)
         halt 401
       end
 
-      if Pass.register_pass($redis, params[:pass_type_id], params[:serial_number], params[:device_id], data['pushToken'])
+      if Pass.register_pass(params[:pass_type_id], params[:serial_number], params[:device_id], data['pushToken'])
         status 201
       else
         status 200
@@ -54,7 +44,7 @@ module Trackbook
     end
 
     get "/v1/devices/:device_id/registrations/:pass_type_id" do
-      serial_numbers = Pass.find_device_registered_serial_numbers($redis, params[:pass_type_id], params[:device_id])
+      serial_numbers = Pass.find_device_registered_serial_numbers(params[:pass_type_id], params[:device_id])
 
       if serial_numbers.any?
         {
@@ -67,16 +57,16 @@ module Trackbook
     end
 
     delete "/v1/devices/:device_id/registrations/:pass_type_id/:serial_number" do
-      unless pass = Pass.find_authenticated_pass($redis, params[:pass_type_id], params[:serial_number], apple_auth_token)
+      unless pass = Pass.find_authenticated_pass(params[:pass_type_id], params[:serial_number], apple_auth_token)
         halt 401
       end
 
-      Pass.unregister_pass($redis, params[:pass_type_id], params[:serial_number], params[:device_id])
+      Pass.unregister_pass(params[:pass_type_id], params[:serial_number], params[:device_id])
       status 200
     end
 
     get "/v1/passes/:pass_type_id/:serial_number" do
-      unless pass = Pass.find_pass($redis, params[:pass_type_id], params[:serial_number])
+      unless pass = Pass.find_pass(params[:pass_type_id], params[:serial_number])
         halt 401
       end
 
