@@ -80,8 +80,6 @@ module Trackbook
         'auxiliaryFields' => [
           { 'key' => "number", 'label' => "NUMBER", 'value' => pass['serial_number'] },
           { 'key' => "delivered", 'label' => "Delivered by", 'value' => Time.now.strftime("%b %e %k:%M") }
-        ],
-        'backFields' => [
         ]
       }
 
@@ -94,6 +92,20 @@ module Trackbook
       if activity = pass['activity'].first
         fields['secondaryFields'] = [
           { 'key' => "status", 'label' => "STATUS", 'value' => activity['status'] }
+        ]
+      end
+
+      if activities = pass['activity']
+        text = activities.map { |activity|
+          [
+           activity['timestamp'].strftime("%m/%d"),
+           activity['location'],
+           activity['status']
+          ].join("  ")
+        }.join("\n")
+
+        fields['backFields'] = [
+          { 'key' => "activity", 'label' => "ACTIVITY", 'value' => text }
         ]
       end
 
