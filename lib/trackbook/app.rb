@@ -49,7 +49,7 @@ module Trackbook
 
       if serial_numbers.any?
         {
-          'lastUpdated' => Time.now,
+          'lastUpdated' => Time.now.utc,
           'serialNumbers' => serial_numbers
         }.to_json
       else

@@ -13,7 +13,7 @@ module Trackbook
       return result if resp['Response']['ResponseStatusDescription'] != 'Success'
 
       if date = resp['Shipment']['ScheduledDeliveryDate']
-        result['deliver_on'] = Time.parse(date)
+        result['deliver_on'] = Time.parse(date + " 00:00 UTC")
       end
 
       activities = resp['Shipment']['Package']['Activity']
@@ -27,7 +27,7 @@ module Trackbook
         result['activity'] << {
           'location' => location,
           'status' => activity['Status']['StatusType']['Description'],
-          'timestamp' => Time.parse("#{activity['Date']} #{activity['Time']}")
+          'timestamp' => Time.parse("#{activity['Date']} #{activity['Time']} UTC")
         }
       end
 

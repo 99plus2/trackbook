@@ -12,18 +12,18 @@ class TestPass < Test::Unit::TestCase
     'authentication_token' => "6ad6738983ce899bb5c33f70d9fab474",
     'description' => "Nexus 7",
     'activity' => [
-      {"location" => "CHICAGO IL 60614", "status" => "DELIVERED", "timestamp" => Time.parse("2012-09-06 17:07:00")},
-      {"location" => "CHICAGO IL", "status" => "OUT FOR DELIVERY", "timestamp" => Time.parse("2012-09-06 04:49:00")},
-      {"location" => "CHICAGO IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-06 02:44:00")},
-      {"location" => "ADDISON IL", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-06 01:54:00")},
-      {"location" => "ADDISON IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 23:43:00")},
-      {"location" => "CHICAGO IL", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 23:02:00")},
-      {"location" => "CHICAGO IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 22:26:00")},
-      {"location" => "HODGKINS IN", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 21:49:00")},
-      {"location" => "HODGKINS IN", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 21:23:00")},
-      {"location" => "LOUISVILLE KY", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 17:38:00")},
-      {"location" => "LOUISVILLE KY", "status" => "ORIGIN SCAN", "timestamp" => Time.parse("2012-09-05 13:27:00")},
-      {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-09-04 16:43:57")}
+      {"location" => "CHICAGO IL 60614", "status" => "DELIVERED", "timestamp" => Time.parse("2012-09-06 17:07:00 UTC")},
+      {"location" => "CHICAGO IL", "status" => "OUT FOR DELIVERY", "timestamp" => Time.parse("2012-09-06 04:49:00 UTC")},
+      {"location" => "CHICAGO IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-06 02:44:00 UTC")},
+      {"location" => "ADDISON IL", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-06 01:54:00 UTC")},
+      {"location" => "ADDISON IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 23:43:00 UTC")},
+      {"location" => "CHICAGO IL", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 23:02:00 UTC")},
+      {"location" => "CHICAGO IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 22:26:00 UTC")},
+      {"location" => "HODGKINS IN", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 21:49:00 UTC")},
+      {"location" => "HODGKINS IN", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 21:23:00 UTC")},
+      {"location" => "LOUISVILLE KY", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 17:38:00 UTC")},
+      {"location" => "LOUISVILLE KY", "status" => "ORIGIN SCAN", "timestamp" => Time.parse("2012-09-05 13:27:00 UTC")},
+      {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-09-04 16:43:57 UTC")}
     ]
   }
 
@@ -32,9 +32,9 @@ class TestPass < Test::Unit::TestCase
     'serial_number' => "1Z9999999999999999",
     'authentication_token' => "6ad6738983ce899bb5c33f70d9fab474",
     'description' => "Paper",
-    'deliver_on' => Time.parse("2012-10-03"),
+    'deliver_on' => Time.parse("2012-10-03 00:00 UTC"),
     'activity' => [
-      {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-10-01 10:20:08")}
+      {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-10-01 10:20:08 UTC")}
     ]
   }
 
@@ -51,6 +51,7 @@ class TestPass < Test::Unit::TestCase
 
     assert_equal "Trackbook", pass['organizationName']
     assert_equal "UPS Tracking information for Nexus 7", pass['description']
+    assert_nil pass['relevantDate']
 
     assert_equal "Nexus 7", pass['generic']['primaryFields'][0]['value']
     assert_equal "DELIVERED", pass['generic']['secondaryFields'][0]['value']
@@ -85,6 +86,7 @@ EOS
 
     assert_equal "Trackbook", pass['organizationName']
     assert_equal "UPS Tracking information for Paper", pass['description']
+    assert_equal "2012-10-03", pass['relevantDate']
 
     assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
     assert_equal "BILLING INFORMATION RECEIVED", pass['generic']['secondaryFields'][0]['value']

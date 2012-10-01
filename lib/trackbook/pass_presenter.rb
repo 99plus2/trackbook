@@ -1,3 +1,5 @@
+require 'time'
+
 require 'trackbook/pass'
 require 'trackbook/pkpass'
 
@@ -39,6 +41,7 @@ module Trackbook
 
         'organizationName' => "Trackbook",
         'description' => "UPS Tracking information for #{pass['description'] || pass['serial_number']}",
+        'relevantDate' => (pass['deliver_on'] && pass['deliver_on'].strftime("%Y-%m-%d")),
 
         'logoText' => "UPS",
         'foregroundColor' => "rgb(255, 255, 255)",
