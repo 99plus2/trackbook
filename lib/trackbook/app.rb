@@ -6,6 +6,11 @@ module Trackbook
   class App < Sinatra::Base
     set :root, File.expand_path("..", __FILE__)
 
+    if ENV['RACK_ENV'] == 'production'
+      require 'rack/ssl'
+      use Rack::SSL
+    end
+
     configure do
       require 'redis'
       if url = ENV['REDISTOGO_URL']
