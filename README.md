@@ -2,7 +2,7 @@
 
 Passbook Package tracking
 
-![](http://i.imgur.com/VahfG.png)
+![](http://i.imgur.com/4LlO6.png)
 
 ## Usage
 
