@@ -1,5 +1,6 @@
 require 'base64'
 require 'digest/sha1'
+require 'json'
 require 'openssl'
 require 'zip/zip'
 
