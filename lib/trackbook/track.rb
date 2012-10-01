@@ -16,6 +16,7 @@ module Trackbook
       end
 
       activities = resp['Shipment']['Package']['Activity']
+      activities = [activities] unless activities.is_a?(Array)
       activities.inject([]) do |results, activity|
         address = activity['ActivityLocation']['Address']
         results << {
