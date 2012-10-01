@@ -26,7 +26,7 @@ module Trackbook
     end
 
     post "/" do
-      pass_type_id, serial_number = Pass.generate_pass($redis, "5SW9VUVYKC.pass.joshpeek.test")
+      pass_type_id, serial_number = Pass.generate_pass($redis, ENV['PASS_TYPE_ID'])
       redirect "/v1/passes/#{pass_type_id}/#{serial_number}"
     end
 
