@@ -5,10 +5,13 @@ module Trackbook
     extend self
 
     def track_shipment(number)
+      # Test number
+      return [] if number =~ /^1Z99999/
+
       ups = Shipping::UPS.new(ENV['UPS_EMAIL'], ENV['UPS_PASS'], ENV['UPS_KEY'])
       resp = ups.track_shipment(number)['TrackResponse']
 
-      if resp['ResponseStatusCode'] != '1'
+      if resp['Response']['ResponseStatusDescription'] != 'Success'
         return []
       end
 

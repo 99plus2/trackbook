@@ -15,7 +15,7 @@ module Trackbook
       id.split(".", 2)
     end
 
-    def generate_pass(redis, pass_type_id, tracking_number)
+    def generate_pass(redis, pass_type_id, tracking_number, description = nil)
       team_id, pass_type_id = split_team_and_pass_type_id(pass_type_id)
 
       pass = {
@@ -23,6 +23,7 @@ module Trackbook
         'serial_number' => tracking_number,
         'authentication_token' => SecureRandom.hex(16),
       }
+      pass['description'] = description if description
 
       key = "passes:#{pass_type_id}:#{tracking_number}"
       redis.set key, pass.to_json
@@ -76,9 +77,6 @@ module Trackbook
 
     def pass_fields(pass)
       fields = {
-        'primaryFields' => [
-          { 'key' => "description", 'value' => "iPhone 5" }
-        ],
         'auxiliaryFields' => [
           { 'key' => "number", 'label' => "NUMBER", 'value' => pass['serial_number'] },
           { 'key' => "delivered", 'label' => "Delivered by", 'value' => Time.now.strftime("%b %e %k:%M") }
@@ -87,12 +85,16 @@ module Trackbook
         ]
       }
 
+      if description = pass['description']
+        fields['primaryFields'] = [
+          { 'key' => "description", 'value' => description }
+        ]
+      end
+
       if activity = pass['activity'].first
-        fields.merge!({
-          'secondaryFields' => [
-            { 'key' => "status", 'label' => "STATUS", 'value' => activity['status'] }
-          ],
-        })
+        fields['secondaryFields'] = [
+          { 'key' => "status", 'label' => "STATUS", 'value' => activity['status'] }
+        ]
       end
 
       fields

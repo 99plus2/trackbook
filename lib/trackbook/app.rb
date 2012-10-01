@@ -32,7 +32,7 @@ module Trackbook
     end
 
     post "/" do
-      pass_type_id, serial_number = Pass.generate_pass($redis, PASS_TYPE_ID, params[:tracking_number])
+      pass_type_id, serial_number = Pass.generate_pass($redis, PASS_TYPE_ID, params[:tracking_number], params[:description])
       redirect "/v1/passes/#{pass_type_id}/#{serial_number}"
     end
 
