@@ -10,7 +10,7 @@ certificate stuff inorder to generate passes locally.
 First head over to the [iOS Provisioning Portal](https://developer.apple.com/ios/manage/overview/index.action),
 follow the directions and create a new "Pass Type IDs".
 
-![](http://i.imgur.com/gQwIe.png)
+![](http://i.imgur.com/tPkAE.png)
 
 Take note of the full team and type ID. Mine is
 `5SW9VUVYKC.pass.trackbook.tracking-info`. Then export that as an
