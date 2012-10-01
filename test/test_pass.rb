@@ -12,13 +12,13 @@ class TestPass < Test::Unit::TestCase
   end
 
   def test_generate_pass
-    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example")
+    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
     assert_equal "pass.com.example", pass_type_id
-    assert_match %r{^........-....-....-....-............$}, serial_number
+    assert_equal "1Z9999999999999999", serial_number
   end
 
   def test_find_pass
-    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example")
+    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
     assert pass = find_pass(@redis, pass_type_id, serial_number)
 
     assert_equal "1234567890.pass.com.example", pass['pass_type_id']
@@ -27,7 +27,7 @@ class TestPass < Test::Unit::TestCase
   end
 
   def test_format_pass
-    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example")
+    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
     assert pass = find_pass(@redis, pass_type_id, serial_number)
     assert pass = format_pass(pass)
 
@@ -38,17 +38,17 @@ class TestPass < Test::Unit::TestCase
   end
 
   def test_register_pass
-    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example")
+    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
 
+    unregister_pass(@redis, pass_type_id, serial_number, @device_id)
     assert register_pass(@redis, pass_type_id, serial_number, @device_id)
     assert !register_pass(@redis, pass_type_id, serial_number, @device_id)
   end
 
   def test_unregister_pass
-    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example")
+    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
 
-    assert !unregister_pass(@redis, pass_type_id, serial_number, @device_id)
-    assert register_pass(@redis, pass_type_id, serial_number, @device_id)
+    register_pass(@redis, pass_type_id, serial_number, @device_id)
     assert unregister_pass(@redis, pass_type_id, serial_number, @device_id)
     assert !unregister_pass(@redis, pass_type_id, serial_number, @device_id)
   end

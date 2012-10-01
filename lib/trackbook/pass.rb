@@ -1,10 +1,7 @@
 require 'json'
 require 'securerandom'
-require 'uuid'
 
 require 'trackbook/pkpass'
-
-$uuid = UUID.new
 
 module Trackbook
   module Pass
@@ -17,22 +14,20 @@ module Trackbook
       id.split(".", 2)
     end
 
-    def generate_pass(redis, pass_type_id)
+    def generate_pass(redis, pass_type_id, tracking_number)
       team_id, pass_type_id = split_team_and_pass_type_id(pass_type_id)
-
-      serial_number = $uuid.generate
 
       pass = {
         'pass_type_id' => "#{team_id}.#{pass_type_id}",
-        'serial_number' => serial_number,
+        'serial_number' => tracking_number,
         'authentication_token' => SecureRandom.hex(16),
       }
 
-      key = "passes:#{pass_type_id}:#{serial_number}"
+      key = "passes:#{pass_type_id}:#{tracking_number}"
       redis.set key, pass.to_json
       redis.expire key, MONTH_SECS
 
-      [pass_type_id, serial_number]
+      [pass_type_id, tracking_number]
     end
 
     def read_image_data(filename)
