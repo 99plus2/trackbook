@@ -2,6 +2,7 @@ require 'json'
 require 'securerandom'
 
 require 'trackbook/pkpass'
+require 'trackbook/track'
 
 module Trackbook
   module Pass
@@ -74,12 +75,9 @@ module Trackbook
     end
 
     def pass_fields(pass)
-      {
+      fields = {
         'primaryFields' => [
           { 'key' => "description", 'value' => "iPhone 5" }
-        ],
-        'secondaryFields' => [
-          { 'key' => "status", 'label' => "STATUS", 'value' => "Out for Delivery" }
         ],
         'auxiliaryFields' => [
           { 'key' => "number", 'label' => "NUMBER", 'value' => pass['serial_number'] },
@@ -88,11 +86,21 @@ module Trackbook
         'backFields' => [
         ]
       }
+
+      if activity = pass['activity'].first
+        fields.merge!({
+          'secondaryFields' => [
+            { 'key' => "status", 'label' => "STATUS", 'value' => activity['status'] }
+          ],
+        })
+      end
+
+      fields
     end
 
     def find_pass(redis, pass_type_id, serial_number)
       if pass = redis.get("passes:#{pass_type_id}:#{serial_number}")
-        JSON.parse(pass)
+        JSON.parse(pass).merge({'activity' => Track.track_shipment(serial_number)})
       end
     end
 
