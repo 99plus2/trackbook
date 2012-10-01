@@ -30,7 +30,7 @@ module Trackbook
     def format_pass(pass)
       team_id, pass_type_id = Pass.split_team_and_pass_type_id(pass['pass_type_id'])
 
-      {
+      json = {
         'formatVersion' => 1,
 
         'teamIdentifier' => team_id,
@@ -41,7 +41,6 @@ module Trackbook
 
         'organizationName' => "Trackbook",
         'description' => "UPS Tracking information for #{pass['description'] || pass['serial_number']}",
-        'relevantDate' => (pass['deliver_on'] && pass['deliver_on'].strftime("%Y-%m-%d")),
 
         'logoText' => "UPS",
         'foregroundColor' => "rgb(255, 255, 255)",
@@ -49,6 +48,12 @@ module Trackbook
 
         'generic' => present_fields(pass)
       }
+
+      if pass['deliver_on']
+        json['relevantDate'] = pass['deliver_on'].strftime("%Y-%m-%d")
+      end
+
+      json
     end
 
     def present_fields(pass)
