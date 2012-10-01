@@ -44,7 +44,7 @@ module Trackbook
 
         'logoText' => "UPS",
         'foregroundColor' => "rgb(255, 255, 255)",
-        'backgroundColor' => "rgb(68, 0, 0)",
+        'backgroundColor' => "rgb(100, 65, 23)",
 
         'generic' => present_fields(pass)
       }
