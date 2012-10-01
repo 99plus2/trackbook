@@ -74,7 +74,6 @@ module Trackbook
 
       content_type 'application/vnd.apple.pkpass'
       attachment "#{params[:serial_number]}.pkpass"
-      last_modified Time.now-60
       PassPresenter.present_pkpass(pass, "#{request.base_url}/")
     end
 
