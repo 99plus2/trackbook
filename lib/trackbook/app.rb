@@ -25,8 +25,14 @@ module Trackbook
       erb :index
     end
 
+    if ENV['PASS_TYPE_ID']
+      PASS_TYPE_ID = ENV['PASS_TYPE_ID']
+    else
+      raise "Missing Passbook Type ID. Please set PASS_TYPE_ID."
+    end
+
     post "/" do
-      pass_type_id, serial_number = Pass.generate_pass($redis, ENV['PASS_TYPE_ID'])
+      pass_type_id, serial_number = Pass.generate_pass($redis, PASS_TYPE_ID)
       redirect "/v1/passes/#{pass_type_id}/#{serial_number}"
     end
 
