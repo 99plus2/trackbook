@@ -51,6 +51,19 @@ module Trackbook
       end
     end
 
+    get "/v1/devices/:device_id/registrations/:pass_type_id" do
+      serial_numbers = Pass.find_device_registered_serial_numbers($reids, params[:pass_type_id], params[:device_id])
+
+      if serial_numbers.any?
+        {
+          'lastUpdated' => Time.now,
+          'serialNumbers' => serial_numbers
+        }.to_json
+      else
+        status 204
+      end
+    end
+
     delete "/v1/devices/:device_id/registrations/:pass_type_id/:serial_number" do
       unless pass = Pass.find_authenticated_pass($redis, params[:pass_type_id], params[:serial_number], apple_auth_token)
         halt 401

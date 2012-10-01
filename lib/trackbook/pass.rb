@@ -111,14 +111,30 @@ module Trackbook
         'serial_number' => serial_number,
         'push_token' => push_token
       }
-      key = "registrations:#{serial_number}:#{device_id}"
+
+      key = "registrations:#{pass_type_id}:#{serial_number}:#{device_id}"
       res = redis.setnx key, registration.to_json
       redis.expire key, WEEK_SECS
+
+      key = "devices:#{pass_type_id}:#{device_id}"
+      redis.sadd key, serial_number
+      redis.expire key, WEEK_SECS
+
       res
     end
 
     def unregister_pass(redis, pass_type_id, serial_number, device_id)
-      redis.del("registrations:#{serial_number}:#{device_id}") > 0
+      res = redis.del("registrations:#{pass_type_id}:#{serial_number}:#{device_id}")
+
+      key = "devices:#{pass_type_id}:#{device_id}"
+      redis.srem key, serial_number
+      redis.expire key, WEEK_SECS
+
+      res > 0
+    end
+
+    def find_device_registered_serial_numbers(redis, pass_type_id, device_id)
+      redis.smembers("devices:#{pass_type_id}:#{device_id}")
     end
   end
 end

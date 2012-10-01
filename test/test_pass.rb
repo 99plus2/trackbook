@@ -52,4 +52,15 @@ class TestPass < Test::Unit::TestCase
     assert unregister_pass(@redis, pass_type_id, serial_number, @device_id)
     assert !unregister_pass(@redis, pass_type_id, serial_number, @device_id)
   end
+
+  def test_registered_serial_numbers
+    generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
+    generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999998")
+
+    register_pass(@redis, "pass.com.example", "1Z9999999999999999", @device_id)
+    register_pass(@redis, "pass.com.example", "1Z9999999999999998", @device_id)
+
+    assert_equal ["1Z9999999999999998", "1Z9999999999999999"],
+      find_device_registered_serial_numbers(@redis, "pass.com.example", @device_id).sort
+  end
 end
