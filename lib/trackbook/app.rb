@@ -1,6 +1,8 @@
 require 'sinatra'
 
 require 'trackbook/pass'
+require 'trackbook/pass_presenter'
+require 'trackbook/track'
 
 module Trackbook
   class App < Sinatra::Base
@@ -83,7 +85,7 @@ module Trackbook
       content_type 'application/vnd.apple.pkpass'
       attachment "#{params[:serial_number]}.pkpass"
       last_modified Time.now-60
-      Pass.build_pass_pkpass(pass, "#{request.base_url}/")
+      PassPresenter.present_pkpass(pass, "#{request.base_url}/")
     end
 
     post "/v1/log" do

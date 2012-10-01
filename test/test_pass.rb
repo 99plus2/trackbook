@@ -26,17 +26,6 @@ class TestPass < Test::Unit::TestCase
     assert pass['authentication_token']
   end
 
-  def test_format_pass
-    pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
-    assert pass = find_pass(@redis, pass_type_id, serial_number)
-    assert pass = format_pass(pass)
-
-    assert_equal 1, pass['formatVersion']
-    assert_equal "1234567890", pass['teamIdentifier']
-    assert_equal "pass.com.example", pass['passTypeIdentifier']
-    assert_equal serial_number, pass['serialNumber']
-  end
-
   def test_register_pass
     pass_type_id, serial_number = generate_pass(@redis, "1234567890.pass.com.example", "1Z9999999999999999")
 
