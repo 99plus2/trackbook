@@ -23,11 +23,15 @@ module Trackbook
       result['activity'] = []
       activities.each do |activity|
         address = activity['ActivityLocation']['Address']
-        location = [address['City'], address['StateProvinceCode'], address['PostalCode']].compact.join(" ")
-        location = nil if location == ""
+
+        location = []
+        location << address['City'].capitalize if address['City']
+        location << address['StateProvinceCode'] if address['StateProvinceCode']
+        location << address['PostalCode'] if address['PostalCode']
+
         result['activity'] << {
-          'location' => location,
-          'status' => activity['Status']['StatusType']['Description'],
+          'location' => location.any? ? location.join(" ") : nil,
+          'status' => activity['Status']['StatusType']['Description'].to_s.capitalize,
           'timestamp' => Time.parse("#{activity['Date']} #{activity['Time']} UTC")
         }
       end

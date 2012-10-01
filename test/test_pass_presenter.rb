@@ -12,18 +12,18 @@ class TestPass < Test::Unit::TestCase
     'authentication_token' => "6ad6738983ce899bb5c33f70d9fab474",
     'description' => "Nexus 7",
     'activity' => [
-      {"location" => "CHICAGO IL 60614", "status" => "DELIVERED", "timestamp" => Time.parse("2012-09-06 17:07:00 UTC")},
-      {"location" => "CHICAGO IL", "status" => "OUT FOR DELIVERY", "timestamp" => Time.parse("2012-09-06 04:49:00 UTC")},
-      {"location" => "CHICAGO IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-06 02:44:00 UTC")},
-      {"location" => "ADDISON IL", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-06 01:54:00 UTC")},
-      {"location" => "ADDISON IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 23:43:00 UTC")},
-      {"location" => "CHICAGO IL", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 23:02:00 UTC")},
-      {"location" => "CHICAGO IL", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 22:26:00 UTC")},
-      {"location" => "HODGKINS IN", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 21:49:00 UTC")},
-      {"location" => "HODGKINS IN", "status" => "ARRIVAL SCAN", "timestamp" => Time.parse("2012-09-05 21:23:00 UTC")},
-      {"location" => "LOUISVILLE KY", "status" => "DEPARTURE SCAN", "timestamp" => Time.parse("2012-09-05 17:38:00 UTC")},
-      {"location" => "LOUISVILLE KY", "status" => "ORIGIN SCAN", "timestamp" => Time.parse("2012-09-05 13:27:00 UTC")},
-      {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-09-04 16:43:57 UTC")}
+      {"location" => "Chicago IL 60614", "status" => "Delivered", "timestamp" => Time.parse("2012-09-06 17:07:00 UTC")},
+      {"location" => "Chicago IL", "status" => "Out for delivery", "timestamp" => Time.parse("2012-09-06 04:49:00 UTC")},
+      {"location" => "Chicago IL", "status" => "Arrival scan", "timestamp" => Time.parse("2012-09-06 02:44:00 UTC")},
+      {"location" => "Addison IL", "status" => "Departure scan", "timestamp" => Time.parse("2012-09-06 01:54:00 UTC")},
+      {"location" => "Addison IL", "status" => "Arrival scan", "timestamp" => Time.parse("2012-09-05 23:43:00 UTC")},
+      {"location" => "Chicago IL", "status" => "Departure scan", "timestamp" => Time.parse("2012-09-05 23:02:00 UTC")},
+      {"location" => "Chicago IL", "status" => "Arrival scan", "timestamp" => Time.parse("2012-09-05 22:26:00 UTC")},
+      {"location" => "Hodgkins IN", "status" => "Departure scan", "timestamp" => Time.parse("2012-09-05 21:49:00 UTC")},
+      {"location" => "Hodgkins IN", "status" => "Arrival scan", "timestamp" => Time.parse("2012-09-05 21:23:00 UTC")},
+      {"location" => "Louisville KY", "status" => "Departure scan", "timestamp" => Time.parse("2012-09-05 17:38:00 UTC")},
+      {"location" => "Louisville KY", "status" => "Origin scan", "timestamp" => Time.parse("2012-09-05 13:27:00 UTC")},
+      {"status" => "Billing information received", "timestamp" => Time.parse("2012-09-04 16:43:57 UTC")}
     ]
   }
 
@@ -35,7 +35,7 @@ class TestPass < Test::Unit::TestCase
     'deliver_on' => Time.parse("2012-10-03 00:00 UTC"),
     'deliver_in' => 3,
     'activity' => [
-      {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-10-01 10:20:08 UTC")}
+      {"status" => "Billing information received", "timestamp" => Time.parse("2012-10-01 10:20:08 UTC")}
     ]
   }
 
@@ -55,22 +55,22 @@ class TestPass < Test::Unit::TestCase
     assert_nil pass['relevantDate']
 
     assert_equal "Nexus 7", pass['generic']['primaryFields'][0]['value']
-    assert_equal "DELIVERED", pass['generic']['secondaryFields'][0]['value']
+    assert_equal "Delivered", pass['generic']['secondaryFields'][0]['value']
     assert_equal "1Z9999999999999999", pass['generic']['auxiliaryFields'][0]['value']
 
     assert_equal <<-EOS.chomp, pass['generic']['backFields'][0]['value']
-09/06  CHICAGO IL 60614  DELIVERED
-09/06  CHICAGO IL  OUT FOR DELIVERY
-09/06  CHICAGO IL  ARRIVAL SCAN
-09/06  ADDISON IL  DEPARTURE SCAN
-09/05  ADDISON IL  ARRIVAL SCAN
-09/05  CHICAGO IL  DEPARTURE SCAN
-09/05  CHICAGO IL  ARRIVAL SCAN
-09/05  HODGKINS IN  DEPARTURE SCAN
-09/05  HODGKINS IN  ARRIVAL SCAN
-09/05  LOUISVILLE KY  DEPARTURE SCAN
-09/05  LOUISVILLE KY  ORIGIN SCAN
-09/04    BILLING INFORMATION RECEIVED
+09/06  Chicago IL 60614  Delivered
+09/06  Chicago IL  Out for delivery
+09/06  Chicago IL  Arrival scan
+09/06  Addison IL  Departure scan
+09/05  Addison IL  Arrival scan
+09/05  Chicago IL  Departure scan
+09/05  Chicago IL  Arrival scan
+09/05  Hodgkins IN  Departure scan
+09/05  Hodgkins IN  Arrival scan
+09/05  Louisville KY  Departure scan
+09/05  Louisville KY  Origin scan
+09/04    Billing information received
 EOS
   end
 
@@ -91,12 +91,12 @@ EOS
 
     assert_equal "3", pass['generic']['headerFields'][0]['value']
     assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
-    assert_equal "BILLING INFORMATION RECEIVED", pass['generic']['secondaryFields'][0]['value']
+    assert_equal "Billing information received", pass['generic']['secondaryFields'][0]['value']
     assert_equal "1Z9999999999999999", pass['generic']['auxiliaryFields'][0]['value']
     assert_equal "Oct  3", pass['generic']['auxiliaryFields'][1]['value']
 
     assert_equal <<-EOS.chomp, pass['generic']['backFields'][0]['value']
-10/01    BILLING INFORMATION RECEIVED
+10/01    Billing information received
 EOS
   end
 
