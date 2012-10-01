@@ -33,6 +33,7 @@ class TestPass < Test::Unit::TestCase
     'authentication_token' => "6ad6738983ce899bb5c33f70d9fab474",
     'description' => "Paper",
     'deliver_on' => Time.parse("2012-10-03 00:00 UTC"),
+    'deliver_in' => 3,
     'activity' => [
       {"status" => "BILLING INFORMATION RECEIVED", "timestamp" => Time.parse("2012-10-01 10:20:08 UTC")}
     ]
@@ -88,6 +89,7 @@ EOS
     assert_equal "UPS Tracking information for Paper", pass['description']
     assert_equal "2012-10-03T00:00:00Z", pass['relevantDate']
 
+    assert_equal "3", pass['generic']['headerFields'][0]['value']
     assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
     assert_equal "BILLING INFORMATION RECEIVED", pass['generic']['secondaryFields'][0]['value']
     assert_equal "1Z9999999999999999", pass['generic']['auxiliaryFields'][0]['value']

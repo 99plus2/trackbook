@@ -63,6 +63,12 @@ module Trackbook
         ]
       }
 
+      if deliver_in = pass['deliver_in']
+        fields['headerFields'] = [
+          { 'key' => "days", 'label' => "DAYS", 'value' => deliver_in.to_s }
+        ]
+      end
+
       if deliver_on = pass['deliver_on']
         fields['auxiliaryFields'] << {
           'key' => "delivered", 'label' => "Delivered by", 'value' => deliver_on.strftime("%b %e")

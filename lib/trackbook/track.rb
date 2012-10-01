@@ -14,6 +14,7 @@ module Trackbook
 
       if date = resp['Shipment']['ScheduledDeliveryDate']
         result['deliver_on'] = Time.parse(date + " 00:00 UTC")
+        result['deliver_in'] = ((result['deliver_on'] - Time.now.utc) / (60 * 60 * 24)).ceil
       end
 
       activities = resp['Shipment']['Package']['Activity']
