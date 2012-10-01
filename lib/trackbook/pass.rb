@@ -83,7 +83,7 @@ module Trackbook
         ],
         'auxiliaryFields' => [
           { 'key' => "number", 'label' => "NUMBER", 'value' => pass['serial_number'] },
-          { 'key' => "delivered", 'label' => "Delivered by", 'value' => "Today" }
+          { 'key' => "delivered", 'label' => "Delivered by", 'value' => Time.now.strftime("%b %e %k:%M") }
         ],
         'backFields' => [
         ]
