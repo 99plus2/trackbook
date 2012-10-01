@@ -1,5 +1,24 @@
 # Trackbook
 
+Passbook Package tracking
+
+## Usage
+
+Head over to
+[https://trackbook.herokuapp.com](https://trackbook.herokuapp.com) and
+give it a try.
+
+I'm running this on a broke ass free heroku instance with a 5MB redis
+db. So it maybe slow or completely crumble.
+
+My hope is that people think this is a cool idea and one day is picked
+up by UPS (or maybe Amazon) themselves.
+
+## TODO
+
+* Support more services (Fedex, USPS)
+* Cleanup web site form design
+
 ## Contributing
 
 ### Setting up Certificates
@@ -54,7 +73,8 @@ variables to a script you can source when you want to work on the app.
 
 ### Ruby
 
-Typical ruby/rails setup with bundler.
+Typical ruby/rails setup with bundler. You'll also need a redis db
+server running on its default port.
 
 ``` sh
 $ bundle install
