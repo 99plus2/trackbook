@@ -37,7 +37,7 @@ module Trackbook
         'serialNumber' => pass['serial_number'],
         'authenticationToken' => pass['authentication_token'],
 
-        'organizationName' => "UPS",
+        'organizationName' => "Trackbook",
         'description' => "UPS Tracking information for #{pass['description'] || pass['serial_number']}",
 
         'logoText' => "UPS",

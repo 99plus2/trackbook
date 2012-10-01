@@ -49,7 +49,7 @@ class TestPass < Test::Unit::TestCase
     assert_equal "1Z9999999999999999", pass['serialNumber']
     assert_equal "6ad6738983ce899bb5c33f70d9fab474", pass['authenticationToken']
 
-    assert_equal "UPS", pass['organizationName']
+    assert_equal "Trackbook", pass['organizationName']
     assert_equal "UPS Tracking information for Nexus 7", pass['description']
 
     assert_equal "Nexus 7", pass['generic']['primaryFields'][0]['value']
@@ -83,7 +83,7 @@ EOS
     assert_equal "1Z9999999999999999", pass['serialNumber']
     assert_equal "6ad6738983ce899bb5c33f70d9fab474", pass['authenticationToken']
 
-    assert_equal "UPS", pass['organizationName']
+    assert_equal "Trackbook", pass['organizationName']
     assert_equal "UPS Tracking information for Paper", pass['description']
 
     assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
