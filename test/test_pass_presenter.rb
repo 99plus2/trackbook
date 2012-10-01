@@ -50,7 +50,7 @@ class TestPass < Test::Unit::TestCase
     assert_equal "6ad6738983ce899bb5c33f70d9fab474", pass['authenticationToken']
 
     assert_equal "UPS", pass['organizationName']
-    assert_equal "Tracking information", pass['description']
+    assert_equal "UPS Tracking information for Nexus 7", pass['description']
 
     assert_equal "Nexus 7", pass['generic']['primaryFields'][0]['value']
     assert_equal "DELIVERED", pass['generic']['secondaryFields'][0]['value']
@@ -84,7 +84,7 @@ EOS
     assert_equal "6ad6738983ce899bb5c33f70d9fab474", pass['authenticationToken']
 
     assert_equal "UPS", pass['organizationName']
-    assert_equal "Tracking information", pass['description']
+    assert_equal "UPS Tracking information for Paper", pass['description']
 
     assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
     assert_equal "BILLING INFORMATION RECEIVED", pass['generic']['secondaryFields'][0]['value']
@@ -96,10 +96,16 @@ EOS
 EOS
   end
 
-
   def test_present_delivered_pkpass
     assert pkpass = present_pkpass(DELIVERED_PASS)
     File.open(File.expand_path("../passes/delivered.pkpass", __FILE__), 'w') do |f|
+      f.write pkpass
+    end
+  end
+
+  def test_present_pending_pkpass
+    assert pkpass = present_pkpass(PENDING_PASS)
+    File.open(File.expand_path("../passes/pending.pkpass", __FILE__), 'w') do |f|
       f.write pkpass
     end
   end

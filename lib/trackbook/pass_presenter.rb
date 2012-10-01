@@ -38,7 +38,7 @@ module Trackbook
         'authenticationToken' => pass['authentication_token'],
 
         'organizationName' => "UPS",
-        'description' => "Tracking information",
+        'description' => "UPS Tracking information for #{pass['description'] || pass['serial_number']}",
 
         'logoText' => "UPS",
         'foregroundColor' => "rgb(255, 255, 255)",
