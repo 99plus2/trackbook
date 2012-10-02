@@ -93,7 +93,7 @@ EOS
     assert_equal "Paper", pass['generic']['primaryFields'][0]['value']
     assert_equal "Billing information received", pass['generic']['secondaryFields'][0]['value']
     assert_equal "1Z9999999999999999", pass['generic']['auxiliaryFields'][0]['value']
-    assert_equal "Oct  3", pass['generic']['auxiliaryFields'][1]['value']
+    assert_equal "2012-10-03T00:00:00Z", pass['generic']['auxiliaryFields'][1]['value']
 
     assert_equal <<-EOS.chomp, pass['generic']['backFields'][0]['value']
 10/01    Billing information received
